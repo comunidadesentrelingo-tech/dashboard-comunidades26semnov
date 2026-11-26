@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporte semanal Comunidades — 19 al 26 nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1E39; --teal:#39BB9B; --amarillo:#FED41E; --morado:#5A2899; --naranja:#F98D21;
+  --papel:#F5F8F9; --blanco:#FFFFFF; --linea:#DCE5E8; --suave:#5B6C80; --dato:#EDF2F4;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--papel);color:var(--navy);
+  font-family:'Asap',-apple-system,Segoe UI,Roboto,sans-serif;}
+body{padding-bottom:60px;}
+header.cabecera{background:var(--navy);color:#fff;padding:28px 24px 22px;}
+.cab-wrap{max-width:1180px;margin:0 auto;}
+.antetitulo{color:var(--teal);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;}
+.cab-wrap h1{margin:0 0 4px;font-size:28px;font-weight:700;}
+.cab-wrap .subtitulo{margin:0 0 10px;font-size:16px;font-weight:600;color:var(--amarillo);}
+.cab-wrap .bajada{margin:0;color:#C9D4DE;font-size:13.5px;line-height:1.55;max-width:900px;}
+
+nav.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--linea);
+  display:flex;overflow-x:auto;}
+nav.tabs button{font-family:inherit;background:none;border:none;border-bottom:3px solid transparent;
+  padding:14px 18px;font-size:14px;font-weight:600;color:var(--suave);cursor:pointer;white-space:nowrap;}
+nav.tabs button.activo{color:var(--navy);border-bottom-color:var(--teal);}
+nav.tabs button:hover{color:var(--navy);}
+
+main{max-width:1180px;margin:0 auto;padding:22px 24px 40px;}
+.panel{display:none;}
+.panel.activo{display:block;}
+.panel-titulo{font-size:21px;margin:4px 0 4px;}
+.panel-bajada{color:var(--suave);font-size:14px;margin:0 0 18px;max-width:900px;line-height:1.5;}
+.seccion-sub{font-size:14.5px;margin:26px 0 10px;color:var(--navy);}
+.sub-sub{font-size:13px;margin:0 0 6px;color:var(--suave);font-weight:700;}
+
+.separador-mes{display:flex;align-items:center;gap:12px;margin:34px 0 18px;}
+.separador-mes::before, .separador-mes::after{content:"";flex:1;height:1px;background:var(--linea);}
+.separador-mes span{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--navy);background:var(--amarillo);padding:5px 14px;border-radius:14px;white-space:nowrap;}
+
+.embudo{display:flex;flex-wrap:wrap;background:#fff;border:1px solid var(--linea);border-radius:10px;overflow:hidden;}
+.paso{flex:1 1 180px;padding:16px 18px;border-right:1px solid var(--linea);min-width:160px;}
+.paso:last-child{border-right:none;}
+.paso-label{font-size:10.5px;color:var(--teal);text-transform:uppercase;font-weight:700;letter-spacing:.04em;}
+.paso-cifra{font-size:25px;font-weight:700;color:var(--navy);margin:3px 0;}
+.paso-ctx{font-size:12.4px;color:var(--suave);}
+.paso.dinero .paso-cifra{color:#1e8a67;}
+.paso.pct .paso-cifra{color:var(--morado);}
+.paso.cero .paso-cifra{color:var(--naranja);font-size:18px;}
+
+.bloque{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:16px 18px;margin:14px 0;}
+.bloque-titulo{font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.chip-num{background:var(--navy);color:#fff;width:20px;height:20px;border-radius:5px;display:inline-flex;
+  align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+
+.serie{display:flex;align-items:flex-end;gap:10px;background:#fff;border:1px solid var(--linea);
+  border-radius:10px;padding:18px 14px 10px;overflow-x:auto;}
+.barra-col{flex:1;display:flex;flex-direction:column;align-items:center;min-width:34px;}
+.barra-cifra{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.barra-pista{width:100%;max-width:46px;height:120px;display:flex;align-items:flex-end;position:relative;
+  border-bottom:2px solid var(--navy);}
+.barra{width:100%;border-radius:4px 4px 0 0;position:relative;min-height:2px;}
+.punto-conv{position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:9px;height:9px;
+  border-radius:50%;background:var(--morado);display:block;}
+.barra-dia{font-size:11px;color:var(--suave);margin-top:6px;white-space:nowrap;}
+.leyenda-serie{font-size:11.5px;color:var(--suave);margin:6px 2px 0;}
+.leyenda-serie .punto-conv{position:static;display:inline-block;transform:none;margin-right:5px;}
+
+.tabla-wrap{overflow-x:auto;border:1px solid var(--linea);border-radius:10px;}
+table.tabla-datos{width:100%;border-collapse:collapse;font-size:12.8px;background:#fff;}
+table.tabla-datos th{background:var(--dato);text-align:right;padding:8px 10px;font-size:11px;
+  text-transform:uppercase;color:var(--suave);letter-spacing:.02em;white-space:nowrap;}
+table.tabla-datos th:first-child{text-align:left;}
+table.tabla-datos td{padding:8px 10px;text-align:right;border-top:1px solid var(--linea);
+  font-variant-numeric:tabular-nums;white-space:nowrap;}
+table.tabla-datos td:first-child,table.tabla-datos td.utm{text-align:left;white-space:normal;}
+table.tabla-seguimiento td{text-align:left;white-space:normal;}
+table.tabla-seguimiento th{text-align:left;}
+td.utm-mono,.utm-mono{font-family:'Courier New',monospace;font-size:12.3px;color:var(--morado);word-break:break-all;white-space:normal!important;text-align:left;}
+tr.fila-total{background:#EEF1F2;font-weight:700;border-top:2px solid var(--navy);}
+td.num-total{font-weight:700;}
+
+.pie-nota{font-size:12px;color:var(--suave);margin:8px 2px 0;}
+
+.nota{border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.5;margin:10px 0;position:relative;}
+.nota-tag{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+.nota.analisis{background:#EDF7F4;border-left:4px solid var(--teal);}
+.nota.analisis .nota-tag{color:#1e8a67;}
+.nota.estrategia{background:#F6F2FC;border-left:4px solid var(--morado);}
+.nota.estrategia .nota-tag{color:var(--morado);}
+.nota.solucion{background:#FFF6E6;border-left:4px solid var(--naranja);}
+.nota.solucion .nota-tag{color:var(--naranja);}
+.nota.pendiente-dato{background:#FDEDE6;border-left:4px solid var(--naranja);}
+.nota.pendiente-dato .nota-tag{color:var(--naranja);}
+.nota ul{margin:4px 0 0;padding-left:18px;}
+.nota li{margin:3px 0;}
+
+.barras{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:14px 16px;}
+.rank-fila{display:grid;grid-template-columns:230px 1fr 34px;align-items:center;gap:10px;margin:8px 0;}
+.rank-label{font-size:12.5px;color:var(--navy);}
+.rank-pista{background:var(--dato);border-radius:5px;height:14px;overflow:hidden;}
+.rank-barra{height:100%;border-radius:5px;}
+.rank-valor{font-size:12.5px;font-weight:700;text-align:right;}
+
+.dos-columnas{display:flex;gap:28px;flex-wrap:wrap;}
+.dos-columnas>div{flex:1 1 260px;}
+ul.lista-chips{list-style:none;margin:0;padding:0;}
+ul.lista-chips li{background:#fff;border:1px solid var(--linea);border-radius:7px;padding:8px 10px;
+  margin-bottom:6px;font-size:12.8px;display:flex;justify-content:space-between;align-items:center;}
+.chip-count{background:var(--dato);color:var(--navy);border-radius:10px;padding:1px 8px;font-size:11.5px;font-weight:700;}
+
+.pill{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap;}
+.pill-ok{background:#DFF3EC;color:#1e8a67;}
+.pill-info{background:#E3EEFB;color:#2560B0;}
+.pill-warn{background:#FCE9CF;color:#B2650C;}
+.pill-bad{background:#FADADD;color:#C22B4A;}
+
+@media (max-width:860px){
+  .embudo{flex-direction:column;}
+  .paso{border-right:none;border-bottom:1px solid var(--linea);}
+  .rank-fila{grid-template-columns:110px 1fr 28px;}
+  .rank-label{font-size:11px;}
+  .dos-columnas{flex-direction:column;gap:14px;}
+  .barra-pista{height:90px;}
+  .cab-wrap h1{font-size:22px;}
+}
+</style>
+</head>
+<body>
+<header class="cabecera">
+  <div class="cab-wrap">
+    <p class="antetitulo">Entrelingo Group · Canal Comunidades</p>
+    <h1>Reporte semanal comunidades</h1>
+    <p class="subtitulo">Semana 19 al 26 de noviembre</p>
+    <p class="bajada">Fuentes: Panel UTM Comunidades (GA4 + WooCommerce), Daily log Comunidades, captura de Airtable de agendas SkillsPRO y el cruce Nathanael + Bitrix24 (CRM Rayos X) de AustraliaPRO. Cada pestaña muestra primero la semana del reporte y luego lo que llevamos de noviembre completo — esta parte se va acumulando semana a semana hasta cerrar el mes. Sin Panel de Inscritos del Webinar esta semana, así que esa pestaña se queda con la última información disponible. Jueves 26 nov con el día aún abierto en GA4 al momento del corte.</p>
+  </div>
+</header>
+<nav class="tabs"><button data-target="tab-traducciones" class="activo">Traducciones</button><button data-target="tab-skillspro" class="">SkillsPRO</button><button data-target="tab-australiapro" class="">AustraliaPRO</button><button data-target="tab-webinar" class="">Webinar</button><button data-target="tab-gestion" class="">Gestión operativa</button></nav>
+<main>
+
+<section id="tab-traducciones" class="panel activo">
+<h2 class="panel-titulo">Traducciones (Entrelingo)</h2>
+<p class="panel-bajada">41 sesiones de comunidades en la semana (incluyendo el nuevo link de Blackweek) y 2 ventas dentro del período 19-26 nov: 59,39 AUD (22 nov) y 79,18 AUD (23 nov) — 138,57 AUD en total. La venta del 17 nov (82,70 AUD) queda fuera de esta semana y ya se reportó la semana pasada.</p>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (semana)</div><div class="paso-cifra">41</div><div class="paso-ctx">canal comunidades · GA4, 19-25 nov</div></div>
+<div class="paso dinero"><div class="paso-label">VENTAS (semana)</div><div class="paso-cifra">2</div><div class="paso-ctx">22 y 23 de noviembre · únicos días de venta dentro del 19-26</div></div>
+<div class="paso dinero"><div class="paso-label">INGRESO (semana)</div><div class="paso-cifra">138,57</div><div class="paso-ctx">AUD</div></div>
+</div>
+<h3 class="seccion-sub">Tráfico diario (sesiones, canal comunidades)</h3>
+<div class="serie"><div class="barra-col"><div class="barra-cifra">3</div><div class="barra-pista"><div class="barra" style="height:27%;background:var(--teal)"></div></div><div class="barra-dia">19</div></div><div class="barra-col"><div class="barra-cifra">9</div><div class="barra-pista"><div class="barra" style="height:82%;background:var(--teal)"></div></div><div class="barra-dia">20</div></div><div class="barra-col"><div class="barra-cifra">6</div><div class="barra-pista"><div class="barra" style="height:55%;background:var(--teal)"></div></div><div class="barra-dia">21</div></div><div class="barra-col"><div class="barra-cifra">3</div><div class="barra-pista"><div class="barra" style="height:27%;background:var(--teal)"></div></div><div class="barra-dia">22</div></div><div class="barra-col"><div class="barra-cifra">11</div><div class="barra-pista"><div class="barra" style="height:100%;background:var(--teal)"><span class="punto-conv" title="Día con conversión"></span></div></div><div class="barra-dia">23</div></div><div class="barra-col"><div class="barra-cifra">4</div><div class="barra-pista"><div class="barra" style="height:36%;background:var(--teal)"></div></div><div class="barra-dia">24</div></div><div class="barra-col"><div class="barra-cifra">4</div><div class="barra-pista"><div class="barra" style="height:36%;background:var(--teal)"></div></div><div class="barra-dia">25</div></div><div class="barra-col"><div class="barra-cifra">1</div><div class="barra-pista"><div class="barra" style="height:9%;background:var(--teal)"></div></div><div class="barra-dia">26*</div></div></div>
+<p class="leyenda-serie"><span class="punto-conv"></span> día con venta registrada</p>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — semana</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26*</th><th>Total</th></tr></thead><tbody><tr><td class="utm">comunidades / cotizador / whatsapp</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>·</td><td>2</td><td>·</td><td class="num-total">11</td></tr><tr><td class="utm">comunidades / cotizador / facebook</td><td>2</td><td>2</td><td>2</td><td>·</td><td>1</td><td>·</td><td>1</td><td>·</td><td class="num-total">8</td></tr><tr><td class="utm">whatsapp / comunidad / traduccion_licencia_1h</td><td>·</td><td>3</td><td>2</td><td>1</td><td>8</td><td>1</td><td>·</td><td>·</td><td class="num-total">15</td></tr><tr><td class="utm">whatsapp / community / blackweek · comunidades</td><td>·</td><td>·</td><td>·</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td class="num-total">7</td></tr><tr class="fila-total"><td>Total semana</td><td>3</td><td>9</td><td>6</td><td>3</td><td>11</td><td>4</td><td>4</td><td>1</td><td class="num-total">41</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Ventas de la semana</h3>
+
+<div class="tabla-wrap"><table class="tabla-datos">
+<thead><tr><th>Pedido</th><th>Fecha</th><th>Monto</th><th>Producto registrado</th></tr></thead>
+<tbody><tr><td>#Wc0005286</td><td>22 nov</td><td class='num-total'>59,39 AUD</td><td>NAATI Licencia de conducir · Ultra Express (1 página)</td></tr><tr><td>#Wc0005294</td><td>23 nov</td><td class='num-total'>79,18 AUD</td><td>Certificada · Express (3 páginas)</td></tr>
+<tr class="fila-total"><td colspan="2">Total semana</td><td class="num-total">138,57 AUD</td><td>2 pedidos</td></tr>
+</tbody></table></div>
+
+<h3 class="seccion-sub">Blackweek — tráfico del enlace propio</h3>
+<p class="pie-nota">El link se compartió por primera vez el 22 de noviembre; en los 5 días siguientes acumula 7 sesiones (el jueves 24 fue el día más fuerte, con 3) y todavía ninguna venta registrada con esa etiqueta.</p>
+<h3 class="seccion-sub">Seguimiento por WhatsApp — Traducciones</h3>
+<div class="tabla-wrap"><table class="tabla-datos tabla-seguimiento"><thead><tr><th>Nombre</th><th>WhatsApp</th><th>Estado / nota</th></tr></thead><tbody><tr><td>Yasmin</td><td>+61 473 253 073</td><td>Se le escribió a la cliente; todavía no hay respuesta (sin cambios esta semana)</td></tr><tr><td>Keytling Antequera G</td><td>+61 411 094 230</td><td>Traducción de visa de turismo</td></tr></tbody></table></div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>Las 2 ventas de la semana vienen de 2 enlaces distintos: traduccion_licencia_1h (22 nov) y cotizador/whatsapp (23 nov, esta última sin registro en GA4). El link de Blackweek ya es el tercer enlace con más tráfico de la semana (7 sesiones, por detrás de cotizador/whatsapp y traduccion_licencia_1h), pero todavía no convierte — vale la pena seguirlo de cerca en el próximo corte, sobre todo si el jueves 24 (su mejor día) se repite.</div>
+<div class="nota estrategia"><span class="nota-tag">Estrategia</span><ul><li>Dar seguimiento a si el link de Blackweek empieza a convertir en los próximos días, ya que es su primera semana activo</li></ul></div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Dar seguimiento a Yasmin (sin respuesta desde hace 2 semanas) o cerrar el intento si no contesta esta semana</li></ul></div>
+
+<div class="separador-mes"><span>Lo que llevamos de noviembre (mes completo)</span></div>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (mes)</div><div class="paso-cifra">160</div><div class="paso-ctx">canal comunidades · GA4, 1-26 nov</div></div>
+<div class="paso dinero"><div class="paso-label">VENTAS (mes)</div><div class="paso-cifra">6</div><div class="paso-ctx">pedidos con origen Comunidades</div></div>
+<div class="paso dinero"><div class="paso-label">INGRESO (mes)</div><div class="paso-cifra">404,94</div><div class="paso-ctx">AUD</div></div>
+</div>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — mes completo</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>Sesiones</th></tr></thead><tbody><tr><td class="utm">comunidades / cotizador / whatsapp</td><td class="num-total">91</td></tr><tr><td class="utm">comunidades / cotizador / facebook</td><td class="num-total">16</td></tr><tr><td class="utm">whatsapp / comunidad / traduccion_licencia_1h</td><td class="num-total">46</td></tr><tr><td class="utm">whatsapp / community / blackweek · comunidades</td><td class="num-total">7</td></tr><tr class="fila-total"><td>Total</td><td class="num-total">160</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Ventas del mes</h3>
+
+<div class="tabla-wrap"><table class="tabla-datos">
+<thead><tr><th>Pedido</th><th>Fecha</th><th>Monto</th><th>Producto registrado</th></tr></thead>
+<tbody><tr><td>#Wc0004880</td><td>4 nov</td><td class='num-total'>64,89 AUD</td><td>NAATI Otros · Express</td></tr><tr><td>#Wc0004942</td><td>6 nov</td><td class='num-total'>59,39 AUD</td><td>NAATI Estándar · Express</td></tr><tr><td>#Wc0004999</td><td>9 nov</td><td class='num-total'>59,39 AUD</td><td>NAATI Estándar · Express</td></tr><tr><td>#Wc0005166</td><td>17 nov</td><td class='num-total'>82,70 AUD</td><td>NAATI Estándar · Regular (2 páginas)</td></tr><tr><td>#Wc0005286</td><td>22 nov</td><td class='num-total'>59,39 AUD</td><td>NAATI Licencia de conducir · Ultra Express (1 página)</td></tr><tr><td>#Wc0005294</td><td>23 nov</td><td class='num-total'>79,18 AUD</td><td>Certificada · Express (3 páginas)</td></tr>
+<tr class="fila-total"><td colspan="2">Total mes</td><td class="num-total">404,94 AUD</td><td>5 pedidos</td></tr>
+</tbody></table></div>
+
+<div class="nota analisis"><span class="nota-tag">Análisis</span>El mes llega a 6 pedidos y 404,94 AUD con origen Comunidades. De los 6, 3 fueron por cotizador/facebook y 3 por cotizador/whatsapp y traduccion_licencia_1h combinados — los tres enlaces del canal ya tienen al menos una venta este mes. Blackweek es el único enlace de Traducciones sin ventas todavía, con 7 sesiones en su primera semana activo.</div>
+</section>
+
+<section id="tab-skillspro" class="panel ">
+<h2 class="panel-titulo">SkillsPRO</h2>
+<p class="panel-bajada">60 sesiones de comunidades en la semana, con el sábado 21 como el día más fuerte del mes para el webinar (21 sesiones). Según Airtable, se registraron 9 agendas nuevas esta semana, y el mes ya tiene 1 venta: la consultoría migratoria de Adriana Oviedo.</p>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (semana)</div><div class="paso-cifra">60</div><div class="paso-ctx">canal comunidades · GA4, 19-26 nov</div></div>
+<div class="paso pct"><div class="paso-label">AGENDAS REGISTRADAS (semana)</div><div class="paso-cifra">9</div><div class="paso-ctx">según Airtable, 19-26 nov</div></div>
+<div class="paso dinero"><div class="paso-label">VENTAS (mes)</div><div class="paso-cifra">1</div><div class="paso-ctx">consultoría migratoria (Adriana Oviedo)</div></div>
+</div>
+<p class="pie-nota">Esta semana no se incluye gráfica de tráfico por día: varias UTM de SkillsPRO no traen un desglose diario confirmable en el panel (solo el total y, para algunas, el último día con sesión). Se muestra el total por enlace.</p>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — semana</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>Sesiones</th></tr></thead><tbody><tr><td class="utm">comunidades / webinar / whatsapp · construccion_nov2026</td><td class="num-total">34</td></tr><tr><td class="utm">comunidades / webinar / facebook · construccion_nov2026</td><td class="num-total">9</td></tr><tr><td class="utm">comunidades / webinar / facebook (variante sin campaña)</td><td class="num-total">1</td></tr><tr><td class="utm">comunidades / webinar / linkedin · construccion_nov2026</td><td class="num-total">2</td></tr><tr><td class="utm">whatsapp / community / community_es</td><td class="num-total">11</td></tr><tr><td class="utm">facebook / community / community_es</td><td class="num-total">3</td></tr><tr class="fila-total"><td>Total semana</td><td class="num-total">60</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Agendas registradas esta semana</h3>
+<p class="pie-nota">9 agendas nuevas según Airtable; de esas, solo 3 tienen fecha de creación visible dentro de esta captura (el resto está fuera del scroll mostrado):</p>
+<ul class="lista-chips"><li>Camila Cajigas Cajigas <span class='chip-count'>19 nov</span></li><li>Rodrigo Gonzalez Herrera <span class='chip-count'>23 nov</span></li><li>Daniella Rodriguez <span class='chip-count'>23 nov</span></li></ul>
+<h3 class="seccion-sub">Seguimiento por WhatsApp con Sara (closer)</h3>
+<div class="tabla-wrap"><table class="tabla-datos tabla-seguimiento"><thead><tr><th>Nombre</th><th>WhatsApp</th><th>Estado / nota</th></tr></thead><tbody><tr><td>Adriana Oviedo</td><td>+61 432 910 928</td><td>Pagó la consultoría migratoria (sin cambios esta semana)</td></tr><tr><td>Christopher</td><td>+61 431 120 465</td><td>Nunca volvió a responder</td></tr><tr><td>Esteban Moscoso</td><td>+61 450 571 743</td><td>No contesta</td></tr><tr><td>Andrés Morales</td><td>+57 313 409 8249</td><td>No contesta</td></tr><tr><td>David Arenas</td><td>+61 423 463 803</td><td>No tiene dinero</td></tr><tr><td>Julio César</td><td>+61 403 960 134</td><td>Ingeniero electrónico, +10 años en telecomunicaciones en Australia. Va con Engineers Australia (ANZSCO 263312); quiere revisión de Career Episodes y Summary Statement. No contesta</td></tr><tr><td>Diana</td><td>+61 402 841 602</td><td>Administración, control interno y auditoría. La encuesta no la dejó agendar; preguntó si trabajamos con algún rango de edad. En espera de respuesta</td></tr></tbody></table></div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>El webinar tuvo su mejor día del mes el sábado 21 de noviembre (21 sesiones solo en comunidades/webinar/whatsapp). Se registraron 9 agendas nuevas en Airtable esta semana, aunque el total general del tablero (20) no cambió frente a la semana pasada — posible que incluya altas y bajas que se compensan, vale la pena confirmarlo. El seguimiento con Sara sigue igual que la semana pasada: sin novedades de los 7 leads.</div>
+<div class="nota estrategia"><span class="nota-tag">Estrategia</span><ul><li>Entender qué generó el pico del sábado 21 en el webinar para poder repetirlo antes de que cierre el mes</li></ul></div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Pedir la captura completa del Airtable con la columna Estado Consultoría visible, para poder actualizar el desglose por estado de las 20 agendas (quedó pendiente esta semana)</li></ul></div>
+
+<div class="separador-mes"><span>Lo que llevamos de noviembre (mes completo)</span></div>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (mes)</div><div class="paso-cifra">183</div><div class="paso-ctx">canal comunidades · GA4, 1-26 nov</div></div>
+<div class="paso pct"><div class="paso-label">AGENDAS REGISTRADAS (mes)</div><div class="paso-cifra">20</div><div class="paso-ctx">1 Facebook + 12 LinkedIn + 7 WhatsApp · Airtable</div></div>
+<div class="paso dinero"><div class="paso-label">VENTAS (mes)</div><div class="paso-cifra">1</div><div class="paso-ctx">consultoría migratoria vendida (Adriana Oviedo)</div></div>
+</div>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — mes completo</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>Sesiones</th></tr></thead><tbody><tr><td class="utm">comunidades / webinar / whatsapp · construccion_nov2026</td><td class="num-total">91</td></tr><tr><td class="utm">comunidades / webinar / facebook · construccion_nov2026</td><td class="num-total">20</td></tr><tr><td class="utm">comunidades / webinar / facebook (otra)</td><td class="num-total">1</td></tr><tr><td class="utm">comunidades / webinar / linkedin · construccion_nov2026</td><td class="num-total">5</td></tr><tr><td class="utm">whatsapp / community / community_es</td><td class="num-total">43</td></tr><tr><td class="utm">linkedin / community / community_es</td><td class="num-total">11</td></tr><tr><td class="utm">facebook / community / community_es</td><td class="num-total">12</td></tr><tr class="fila-total"><td>Total</td><td class="num-total">183</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Agendas — último desglose por estado conocido (17 de las 20 agendas)</h3>
+<div class="nota pendiente-dato"><span class="nota-tag">Dato pendiente</span>La captura de esta semana no muestra la columna "Estado Consultoría" (quedó con otra parte de la tabla a la vista), así que no se puede actualizar el desglose por estado de las 20 agendas. Se deja el último conocido, de 17 agendas; las 3 nuevas (todas por WhatsApp) quedan sin clasificar por estado hasta la próxima captura.</div>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>Estado</th><th>Cantidad</th></tr></thead><tbody><tr><td><span class='pill pill-info'>Invitado</span></td><td class='num-total'>4</td></tr><tr><td><span class='pill pill-bad'>Cancelado</span></td><td class='num-total'>2</td></tr><tr><td><span class='pill pill-warn'>Reprogramada</span></td><td class='num-total'>2</td></tr><tr><td><span class='pill pill-ok'>Ejecutada</span></td><td class='num-total'>1</td></tr><tr><td><span class='pill pill-ok'>Consultoría Migratoria</span></td><td class='num-total'>1</td></tr><tr><td><span class='pill pill-warn'>Incompleto</span></td><td class='num-total'>2</td></tr><tr class="fila-total"><td>17 de 20 agendas (conocidas la semana pasada)</td><td class="num-total">12</td></tr></tbody></table></div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>El total de agendas del mes casi se duplicó frente a la primera semana de reporte (11 → 17 → 20). La única venta confirmada del mes para SkillsPRO sigue siendo la consultoría migratoria de Adriana Oviedo.</div>
+</section>
+
+<section id="tab-australiapro" class="panel ">
+<h2 class="panel-titulo">AustraliaPRO</h2>
+<p class="panel-bajada">35 sesiones de Rayos X vía comunidades en la semana. El CRM cruzado (Nathanael + Bitrix24) ya confirma 6 agendas del canal comunidades en lo que va del mes, 2 de ellas con fecha dentro de esta semana.</p>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (semana)</div><div class="paso-cifra">35</div><div class="paso-ctx">canal comunidades · GA4, 19-26 nov</div></div>
+<div class="paso pct"><div class="paso-label">AGENDAS NUEVAS (semana)</div><div class="paso-cifra">2</div><div class="paso-ctx">Manuel Andres (no asistió) y Damaris Leon (sí asistió)</div></div>
+<div class="paso cero"><div class="paso-label">CONVERSIÓN</div><div class="paso-cifra">0</div><div class="paso-ctx">de las 6 agendas confirmadas por comunidades, ninguna vendida</div></div>
+</div>
+<h3 class="seccion-sub">Tráfico por día (sesiones Rayos X, canal comunidades)</h3>
+<div class="serie"><div class="barra-col"><div class="barra-cifra">3</div><div class="barra-pista"><div class="barra" style="height:33%;background:var(--teal)"></div></div><div class="barra-dia">19</div></div><div class="barra-col"><div class="barra-cifra">4</div><div class="barra-pista"><div class="barra" style="height:44%;background:var(--teal)"></div></div><div class="barra-dia">20</div></div><div class="barra-col"><div class="barra-cifra">9</div><div class="barra-pista"><div class="barra" style="height:100%;background:var(--teal)"></div></div><div class="barra-dia">21</div></div><div class="barra-col"><div class="barra-cifra">2</div><div class="barra-pista"><div class="barra" style="height:22%;background:var(--teal)"></div></div><div class="barra-dia">22</div></div><div class="barra-col"><div class="barra-cifra">1</div><div class="barra-pista"><div class="barra" style="height:11%;background:var(--teal)"></div></div><div class="barra-dia">23</div></div><div class="barra-col"><div class="barra-cifra">8</div><div class="barra-pista"><div class="barra" style="height:89%;background:var(--teal)"></div></div><div class="barra-dia">24</div></div><div class="barra-col"><div class="barra-cifra">4</div><div class="barra-pista"><div class="barra" style="height:44%;background:var(--teal)"></div></div><div class="barra-dia">25</div></div><div class="barra-col"><div class="barra-cifra">4</div><div class="barra-pista"><div class="barra" style="height:44%;background:var(--teal)"></div></div><div class="barra-dia">26*</div></div></div>
+<p class="pie-nota">facebook/rayos_x·ingles es una UTM nueva este mes (1 sesión en total, hoy 26 nov); el panel no la desglosa junto a las demás en la matriz diaria, así que no aparece como fila propia arriba, pero sí está incluida en el total de la semana y del mes.</p>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — semana</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26*</th><th>Total</th></tr></thead><tbody><tr><td class="utm">whatsapp / community / rayos_x · espanol</td><td>3</td><td>3</td><td>8</td><td>2</td><td>·</td><td>6</td><td>3</td><td>2</td><td class="num-total">27</td></tr><tr><td class="utm">facebook / community / rayos_x · espanol</td><td>·</td><td>·</td><td>1</td><td>·</td><td>1</td><td>2</td><td>1</td><td>1</td><td class="num-total">6</td></tr><tr><td class="utm">linkedin / community / rayos_x · espanol</td><td>·</td><td>1</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td class="num-total">1</td></tr><tr class="fila-total"><td>Total semana</td><td>3</td><td>4</td><td>9</td><td>2</td><td>1</td><td>8</td><td>4</td><td>3</td><td class="num-total">34</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Agendas confirmadas — canal comunidades (CRM cruzado, mes completo)</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><tr><th>Fecha</th><th>Nombre</th><th>Asiste</th><th>Etapa CRM</th><th>Vendido</th><th>Canal (UTM source)</th></tr><tbody><tr><td>10 nov</td><td>Martin</td><td><span class='pill pill-ok'>SI</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>whatsapp</td></tr><tr><td>13 nov</td><td>Humberto Sánchez Méndez</td><td><span class='pill pill-bad'>NO</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>linkedin</td></tr><tr><td>15 nov</td><td>Franco Chaud Scrimini</td><td><span class='pill pill-ok'>SI</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>whatsapp</td></tr><tr><td>18 nov</td><td>Isabel Mejia</td><td><span class='pill pill-ok'>SI</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>whatsapp</td></tr><tr><td>25 nov</td><td>Manuel Andres</td><td><span class='pill pill-bad'>NO</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>whatsapp</td></tr><tr><td>25 nov</td><td>Damaris Leon</td><td><span class='pill pill-ok'>SI</span></td><td>Elegible Rayos X</td><td><span class='pill pill-info'>No</span></td><td>whatsapp</td></tr></tbody></table></div>
+<p class="pie-nota">Filtrado a utm_medium = community. Manuel Andres y Damaris Leon (25 nov) son las únicas con fecha dentro de esta semana; Humberto Sánchez Méndez (13 nov), Franco Chaud Scrimini (15 nov) e Isabel Mejia (18 nov) son de semanas anteriores, confirmadas recién con esta actualización del cruce.</p>
+<h3 class="seccion-sub">Nuevos contactos por WhatsApp esta semana</h3>
+<div class="tabla-wrap"><table class="tabla-datos tabla-seguimiento"><thead><tr><th>Nombre</th><th>WhatsApp</th><th>Estado / nota</th></tr></thead><tbody><tr><td>Sin nombre</td><td>+61 488 354 213</td><td>Se comunica preguntando por un abogado migratorio</td></tr><tr><td>Gamaliel Romano</td><td>+54 9 2901 40-7608</td><td>Se comunica preguntando por un abogado migratorio; tiene dudas porque le invalidaron su aplicación estudiantil</td></tr><tr><td>Sin nombre</td><td>+61 436 287 409</td><td>Se comunica preguntando por un agente migratorio</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Seguimiento por WhatsApp con Nathanael</h3>
+<div class="tabla-wrap"><table class="tabla-datos tabla-seguimiento"><thead><tr><th>Nombre</th><th>WhatsApp</th><th>Estado / nota</th></tr></thead><tbody><tr><td>Bren</td><td>+52 1 241 111 9472</td><td>No responde</td></tr><tr><td>Coni</td><td>+56 9 7143 1142</td><td>No respondió</td></tr><tr><td>Gamaliel Romano</td><td>+54 9 2901 40-7608</td><td>No respondió (contactó esta semana preguntando por abogado migratorio, visa de estudiante invalidada)</td></tr><tr><td>Henry García</td><td>+61 415 695 818</td><td>No respondió</td></tr><tr><td>José</td><td>—</td><td>Contactado</td></tr><tr><td>Isa (Isabel Mejía)</td><td>—</td><td>Contactada</td></tr></tbody></table></div>
+<h3 class="seccion-sub">Casos a destacar de la semana</h3>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>De las 6 personas del CRM cruzado, 4 asistieron a su llamada (Martin, Franco, Isabel, Damaris) y 2 no (Humberto, Manuel); ninguna está vendida todavía. Los 3 contactos nuevos de esta semana preguntan todos por un abogado o agente migratorio; uno de ellos, Gamaliel Romano, ya quedó identificado en el seguimiento de Nathanael (le invalidaron su aplicación estudiantil). De los 6 nombres en seguimiento, José e Isa (Isabel Mejía) ya están contactados — el resto (Bren, Coni, Gamaliel, Henry) sigue sin responder.</div>
+<div class="nota estrategia"><span class="nota-tag">Estrategia</span><ul><li>Confirmar si los 2 contactos sin nombre (+61 488 354 213 y +61 436 287 409) son leads nuevos o personas ya conocidas por otro canal</li></ul></div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Agendar el siguiente contacto con Franco Chaud Scrimini para resolver su duda sobre la work and holiday visa, que quedó abierta desde el 15 nov</li><li>Insistir con Bren, Coni, Gamaliel y Henry, que siguen sin responder en el seguimiento de Nathanael</li></ul></div>
+
+<div class="separador-mes"><span>Lo que llevamos de noviembre (mes completo)</span></div>
+<div class="embudo">
+<div class="paso"><div class="paso-label">SESIONES (mes)</div><div class="paso-cifra">109</div><div class="paso-ctx">canal comunidades · GA4, 1-26 nov</div></div>
+<div class="paso pct"><div class="paso-label">AGENDAS (mes)</div><div class="paso-cifra">6</div><div class="paso-ctx">confirmadas por comunidades · CRM cruzado Nathanael + Bitrix24</div></div>
+<div class="paso cero"><div class="paso-label">CONVERSIÓN (mes)</div><div class="paso-cifra">0</div><div class="paso-ctx">de 6 agendas confirmadas, ninguna vendida todavía</div></div>
+</div>
+<h3 class="seccion-sub">Tráfico por enlace (UTM) — mes completo</h3>
+<div class="tabla-wrap"><table class="tabla-datos"><thead><tr><th>UTM</th><th>Sesiones</th></tr></thead><tbody><tr><td class="utm">whatsapp / community / rayos_x · espanol</td><td class="num-total">64</td></tr><tr><td class="utm">linkedin / community / rayos_x · espanol</td><td class="num-total">20</td></tr><tr><td class="utm">facebook / community / rayos_x · espanol</td><td class="num-total">20</td></tr><tr><td class="utm">whatsapp / community / rayos_x · ingles</td><td class="num-total">4</td></tr><tr><td class="utm">facebook / community / rayos_x · ingles</td><td class="num-total">1</td></tr><tr class="fila-total"><td>Total</td><td class="num-total">109</td></tr></tbody></table></div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>El canal comunidades ya tiene 6 agendas confirmadas en el mes (todas en etapa "Elegible Rayos X", ninguna vendida), frente a 1 sola la semana pasada. El salto se debe a que el cruce del CRM se actualizó con más historial, no a que hayan entrado 5 agendas nuevas de golpe.</div>
+</section>
+
+<section id="tab-webinar" class="panel ">
+<h2 class="panel-titulo">Webinar Construcción — canal Comunidades (finalizado)</h2>
+<p class="panel-bajada">El webinar se realizó el sábado 21 de noviembre de 2026 y ya cerró. El canal comunidades generó 33 registros (31 personas nuevas) en todo el periodo.</p>
+<div class="embudo">
+<div class="paso"><div class="paso-label">REGISTROS (comunidades)</div><div class="paso-cifra">33</div><div class="paso-ctx">del periodo completo, 24 oct - 22 nov (30 días)</div></div>
+<div class="paso pct"><div class="paso-label">PERSONAS NUEVAS (comunidades)</div><div class="paso-cifra">31</div><div class="paso-ctx">8% de las 400 personas nuevas del periodo</div></div>
+</div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>Comunidades aportó el 8% de las 400 personas nuevas del periodo — el canal más chico de los seis que trajeron registros, muy por debajo de Meta Ads (136) e Instagram Mafe (118).</div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Comparar el costo por registro de comunidades contra Meta Ads e Instagram para decidir cuánto esfuerzo pedirle a este canal en el próximo webinar</li></ul></div>
+</section>
+
+<section id="tab-gestion" class="panel ">
+<h2 class="panel-titulo">Gestión operativa</h2>
+<p class="panel-bajada">372 gestiones registradas en el daily log entre el 19 y el 26 de noviembre: 298 publicaciones, 26 comentarios y 48 mensajes DM. Sábado 21 y domingo 22 sin actividad registrada (fin de semana).</p>
+<div class="embudo">
+<div class="paso"><div class="paso-label">COMENTARIOS (semana)</div><div class="paso-cifra">26</div><div class="paso-ctx">3 líneas de servicio · 19-26 nov</div></div>
+<div class="paso"><div class="paso-label">MENSAJES DM (semana)</div><div class="paso-cifra">48</div><div class="paso-ctx">respuestas por privado</div></div>
+<div class="paso pct"><div class="paso-label">LÍNEA CON MÁS COMENTARIOS</div><div class="paso-cifra">AustraliaPRO</div><div class="paso-ctx">21 comentarios de 26 en la semana</div></div>
+</div>
+<h3 class="seccion-sub">Grupos con más comentarios — AustraliaPRO (semana)</h3>
+<div class="barras"><div class="rank-fila"><div class="rank-label">Colombianas en Melbourne💜🇨🇴</div><div class="rank-pista"><div class="rank-barra" style="width:100%;background:var(--morado)"></div></div><div class="rank-valor">3</div></div><div class="rank-fila"><div class="rank-label">PARTNER VISA AUSTRALIA - 300, 309, 100, 820, 801</div><div class="rank-pista"><div class="rank-barra" style="width:100%;background:var(--morado)"></div></div><div class="rank-valor">3</div></div><div class="rank-fila"><div class="rank-label">Latinos en Australia</div><div class="rank-pista"><div class="rank-barra" style="width:67%;background:var(--morado)"></div></div><div class="rank-valor">2</div></div><div class="rank-fila"><div class="rank-label">Partner Visa Australia</div><div class="rank-pista"><div class="rank-barra" style="width:67%;background:var(--morado)"></div></div><div class="rank-valor">2</div></div><div class="rank-fila"><div class="rank-label">ARGENTINOS EN MELBOURNE</div><div class="rank-pista"><div class="rank-barra" style="width:33%;background:var(--morado)"></div></div><div class="rank-valor">1</div></div><div class="rank-fila"><div class="rank-label">482 & 186 Visa Community Group</div><div class="rank-pista"><div class="rank-barra" style="width:33%;background:var(--morado)"></div></div><div class="rank-valor">1</div></div></div>
+<h3 class="seccion-sub">Grupos con comentarios — Traducciones y SkillsPRO (semana)</h3>
+<div class="dos-columnas">
+<div><h4 class="sub-sub">Traducciones (4 grupos, 1 comentario c/u)</h4><ul class='lista-chips'><li>MEXICANOS EN AUSTRALIA <span class='chip-count'>1</span></li><li>Peruanos en Australia 🇵🇪 <span class='chip-count'>1</span></li><li>The Colombian & International Community Club in Brisbane, QLD <span class='chip-count'>1</span></li><li>🌏 Latinos Melbourne Australia 🌏 <span class='chip-count'>1</span></li></ul></div>
+<div><h4 class="sub-sub">SkillsPRO (0 comentarios esta semana)</h4><p class="pie-nota">Sin comentarios registrados en este período.</p></div>
+</div>
+<h3 class="seccion-sub">Comentarios y mensajes DM por línea, por día (19-26 nov)</h3>
+
+<div class="tabla-wrap"><table class="tabla-datos">
+<thead>
+<tr><th rowspan="2">Día</th><th colspan="2">Traducciones</th><th colspan="2">SkillsPRO</th><th colspan="2">AustraliaPRO</th><th rowspan="2">Total día</th></tr>
+<tr><th>Com.</th><th>DM</th><th>Com.</th><th>DM</th><th>Com.</th><th>DM</th></tr>
+</thead>
+<tbody>
+<tr><td>19</td><td>3</td><td>2</td><td>0</td><td>15</td><td>7</td><td>4</td><td class='num-total'>31</td></tr><tr><td>20</td><td>1</td><td>0</td><td>0</td><td>1</td><td>6</td><td>4</td><td class='num-total'>12</td></tr><tr><td>21</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class='num-total'>0</td></tr><tr><td>22</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class='num-total'>0</td></tr><tr><td>23</td><td>1</td><td>2</td><td>0</td><td>4</td><td>5</td><td>7</td><td class='num-total'>19</td></tr><tr><td>24</td><td>0</td><td>0</td><td>0</td><td>2</td><td>0</td><td>1</td><td class='num-total'>3</td></tr><tr><td>25</td><td>0</td><td>0</td><td>0</td><td>5</td><td>3</td><td>0</td><td class='num-total'>8</td></tr><tr><td>26*</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td class='num-total'>1</td></tr>
+<tr class="fila-total"><td>Semana</td>
+<td>5</td><td>5</td>
+<td>0</td><td>27</td>
+<td>21</td><td>16</td>
+<td class="num-total">74</td></tr>
+</tbody></table></div>
+
+<div class="nota analisis"><span class="nota-tag">Análisis</span>AustraliaPRO concentró 21 de los 26 comentarios de la semana (81 %), sobre todo el jueves 19 y viernes 20. SkillsPRO no tuvo ningún comentario esta semana, pero sí 27 mensajes DM — todo el trabajo de esta línea fue por privado. El lunes 23 fue el día más activo en publicaciones (100 entre las 3 líneas), coincidiendo con el pico de tráfico de Traducciones.</div>
+<div class="nota estrategia"><span class="nota-tag">Estrategia</span><ul><li>Entender por qué SkillsPRO pasó de comentar activamente la semana pasada a cero comentarios esta semana, todo concentrado en DM</li></ul></div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Retomar comentarios en al menos 2 grupos de SkillsPRO la próxima semana para no depender solo de mensajes directos</li></ul></div>
+
+<h3 class="seccion-sub">Miembros actuales de los grupos propios — comparativo 19 nov vs. hoy (26 nov)</h3>
+<div class="embudo">
+<div class="paso"><div class="paso-label">TOTAL FACEBOOK (hoy)</div><div class="paso-cifra">2.791</div><div class="paso-ctx">antes (19 nov): 2.787</div></div>
+<div class="paso pct"><div class="paso-label">TOTAL WHATSAPP (hoy)</div><div class="paso-cifra">3.289</div><div class="paso-ctx">antes (19 nov): 3.204</div></div>
+<div class="paso dinero"><div class="paso-label">TOTAL GENERAL (hoy)</div><div class="paso-cifra">6.080</div><div class="paso-ctx">antes (19 nov): 5.991</div></div>
+</div>
+<h4 class="sub-sub">Facebook</h4>
+<div class="tabla-wrap"><table class="tabla-datos"><tr><th>Grupo</th><th>Tipo</th><th>19 nov</th><th>Hoy (26 nov)</th><th>Δ</th></tr><tbody><tr><td>Latino Networking in Australia</td><td>público</td><td>1.900</td><td class='num-total'>1.900</td><td><span class='pill pill-info'>0</span></td></tr><tr><td>Engineers Australia | Latino Support</td><td>privado</td><td>810</td><td class='num-total'>811</td><td><span class='pill pill-ok'>+1</span></td></tr><tr><td>Skills Assessment para Latinos</td><td>privado</td><td>37</td><td class='num-total'>39</td><td><span class='pill pill-ok'>+2</span></td></tr><tr><td>Australia Migración sin Filtros</td><td>privado</td><td>40</td><td class='num-total'>41</td><td><span class='pill pill-ok'>+1</span></td></tr></tbody></table></div>
+<h4 class="sub-sub">WhatsApp</h4>
+<div class="tabla-wrap"><table class="tabla-datos"><tr><th>Grupo</th><th>19 nov</th><th>Hoy (26 nov)</th><th>Δ</th></tr><tbody><tr><td>Latino Networking AU</td><td>789</td><td class='num-total'>783</td><td><span class='pill pill-bad'>-6</span></td></tr><tr><td>Profesionales en Queensland</td><td>334</td><td class='num-total'>334</td><td><span class='pill pill-info'>0</span></td></tr><tr><td>Profesionales en South Australia</td><td>112</td><td class='num-total'>111</td><td><span class='pill pill-bad'>-1</span></td></tr><tr><td>Profesionales en Western Australia</td><td>153</td><td class='num-total'>160</td><td><span class='pill pill-ok'>+7</span></td></tr><tr><td>Profesionales en Victoria</td><td>165</td><td class='num-total'>163</td><td><span class='pill pill-bad'>-2</span></td></tr><tr><td>Profesionales en New South Wales</td><td>140</td><td class='num-total'>137</td><td><span class='pill pill-bad'>-3</span></td></tr><tr><td>Profesionales en Tasmania</td><td>61</td><td class='num-total'>64</td><td><span class='pill pill-ok'>+3</span></td></tr><tr><td>Profesionales en Northern Territory</td><td>31</td><td class='num-total'>31</td><td><span class='pill pill-info'>0</span></td></tr><tr><td>Webinar gratuito Antiguo</td><td>836</td><td class='num-total'>836</td><td><span class='pill pill-info'>0</span></td></tr><tr><td>Webinar gratuito Nuevo</td><td>227</td><td class='num-total'>227</td><td><span class='pill pill-info'>0</span></td></tr><tr><td>Skills Assessment para Latinos</td><td>109</td><td class='num-total'>114</td><td><span class='pill pill-ok'>+5</span></td></tr><tr><td>Migración sin Filtros</td><td>119</td><td class='num-total'>123</td><td><span class='pill pill-ok'>+4</span></td></tr><tr><td>Engineers in Australia</td><td>128</td><td class='num-total'>136</td><td><span class='pill pill-ok'>+8</span></td></tr><tr><td>Bootcamp de creencias limitantes (Mafe)</td><td>—</td><td class='num-total'>70</td><td><span class='pill pill-ok'>Nuevo</span></td></tr></tbody></table></div>
+<p class="pie-nota">Webinar gratuito Antiguo, Webinar gratuito Nuevo y Profesionales en Northern Territory no venían en la lista de esta semana; se mantiene su último dato conocido (19 nov) sin cambios. Bootcamp de creencias limitantes es un grupo nuevo (webinar personal de Mafe), por eso no tiene cifra de 19 nov.</p>
+<h4 class="sub-sub">Comparación por grupo — top 10 por miembros actuales</h4>
+<div class="barras"><div class="rank-fila"><div class="rank-label">Latino Networking in Australia (FB)</div><div class="rank-pista"><div class="rank-barra" style="width:100%;background:var(--morado)"></div></div><div class="rank-valor">1.900</div></div><div class="rank-fila"><div class="rank-label">Webinar gratuito Antiguo (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:44%;background:var(--morado)"></div></div><div class="rank-valor">836</div></div><div class="rank-fila"><div class="rank-label">Engineers Australia | Latino Support (FB)</div><div class="rank-pista"><div class="rank-barra" style="width:43%;background:var(--morado)"></div></div><div class="rank-valor">811</div></div><div class="rank-fila"><div class="rank-label">Latino Networking AU (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:41%;background:var(--morado)"></div></div><div class="rank-valor">783</div></div><div class="rank-fila"><div class="rank-label">Profesionales en Queensland (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:18%;background:var(--morado)"></div></div><div class="rank-valor">334</div></div><div class="rank-fila"><div class="rank-label">Webinar gratuito Nuevo (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:12%;background:var(--morado)"></div></div><div class="rank-valor">227</div></div><div class="rank-fila"><div class="rank-label">Profesionales en Victoria (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:9%;background:var(--morado)"></div></div><div class="rank-valor">163</div></div><div class="rank-fila"><div class="rank-label">Profesionales en Western Australia (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:8%;background:var(--morado)"></div></div><div class="rank-valor">160</div></div><div class="rank-fila"><div class="rank-label">Profesionales en New South Wales (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:7%;background:var(--morado)"></div></div><div class="rank-valor">137</div></div><div class="rank-fila"><div class="rank-label">Engineers in Australia (WA)</div><div class="rank-pista"><div class="rank-barra" style="width:7%;background:var(--morado)"></div></div><div class="rank-valor">136</div></div></div>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>Los grupos propios suman 6.080 miembros entre las dos plataformas (5.991 la semana pasada). El mayor movimiento es Western Australia, que subió de 153 a 160 (+7); Latino Networking AU (el nacional) bajó de 789 a 783 (-6), la única baja notable. Aparece además un grupo totalmente nuevo: Bootcamp de creencias limitantes, con 70 miembros — es el grupo del nuevo webinar personal con Mafe como speaker (ver detalle en la pestaña Webinar), no de las 3 líneas de servicio de este reporte.</div>
+<div class="nota estrategia"><span class="nota-tag">Estrategia</span><ul><li>Decidir si el Bootcamp de creencias limitantes se sigue reportando aquí junto con los grupos de servicio, o si merece su propio seguimiento aparte ahora que tiene su propio webinar</li></ul></div>
+<div class="nota solucion"><span class="nota-tag">Solución</span><ul><li>Dar seguimiento a por qué Latino Networking AU (nacional) sigue bajando (-6 esta semana, tras ya bajar la anterior) mientras casi todos los regionales suben</li></ul></div>
+
+<div class="separador-mes"><span>Lo que llevamos de noviembre (mes completo)</span></div>
+<div class="embudo">
+<div class="paso"><div class="paso-label">COMENTARIOS (mes)</div><div class="paso-cifra">137</div><div class="paso-ctx">3 líneas de servicio · 1-26 nov</div></div>
+<div class="paso"><div class="paso-label">MENSAJES DM (mes)</div><div class="paso-cifra">118</div><div class="paso-ctx">respuestas por privado</div></div>
+<div class="paso"><div class="paso-label">PUBLICACIONES (mes)</div><div class="paso-cifra">952</div><div class="paso-ctx">3 líneas de servicio</div></div>
+</div>
+<h3 class="seccion-sub">Grupos con más comentarios — AustraliaPRO (top 6, mes)</h3>
+<div class="barras"><div class="rank-fila"><div class="rank-label">PARTNER VISA AUSTRALIA - 300, 309, 100, 820, 801</div><div class="rank-pista"><div class="rank-barra" style="width:100%;background:var(--morado)"></div></div><div class="rank-valor">8</div></div><div class="rank-fila"><div class="rank-label">Colombianos en Sydney</div><div class="rank-pista"><div class="rank-barra" style="width:88%;background:var(--morado)"></div></div><div class="rank-valor">7</div></div><div class="rank-fila"><div class="rank-label">Colombianas en Melbourne💜🇨🇴</div><div class="rank-pista"><div class="rank-barra" style="width:75%;background:var(--morado)"></div></div><div class="rank-valor">6</div></div><div class="rank-fila"><div class="rank-label">Working Holiday Australia - YoMeAnimo!</div><div class="rank-pista"><div class="rank-barra" style="width:75%;background:var(--morado)"></div></div><div class="rank-valor">6</div></div><div class="rank-fila"><div class="rank-label">COLOMBIANOS Y LATINOS EN SYDNEY</div><div class="rank-pista"><div class="rank-barra" style="width:75%;background:var(--morado)"></div></div><div class="rank-valor">6</div></div><div class="rank-fila"><div class="rank-label">Latinos en Australia</div><div class="rank-pista"><div class="rank-barra" style="width:62%;background:var(--morado)"></div></div><div class="rank-valor">5</div></div></div>
+<h3 class="seccion-sub">Comentarios, DM y publicaciones por línea — mes completo</h3>
+
+<div class="tabla-wrap"><table class="tabla-datos">
+<thead><tr><th>Línea de servicio</th><th>Comentarios (mes)</th><th>DM (mes)</th><th>Publicaciones (mes)</th><th>Total (Com.+DM)</th></tr></thead>
+<tbody>
+<tr><td>Traducciones</td><td>24</td><td>11</td><td>166</td><td class='num-total'>35</td></tr><tr><td>SkillsPRO</td><td>14</td><td>76</td><td>454</td><td class='num-total'>90</td></tr><tr><td>AustraliaPRO</td><td>99</td><td>31</td><td>332</td><td class='num-total'>130</td></tr>
+<tr class="fila-total"><td>Total (3 líneas)</td><td>137</td><td>118</td><td>952</td><td class="num-total">255</td></tr>
+</tbody></table></div>
+
+<p class="pie-nota">JobPRO también aparece en el daily log de noviembre (3 comentarios, 24 publicaciones) pero queda fuera de este tablero porque no se pidió como línea de este reporte.</p>
+<div class="nota analisis"><span class="nota-tag">Análisis</span>En el mes completo, AustraliaPRO concentra 99 de los 137 comentarios de las 3 líneas (72 %). SkillsPRO, en cambio, lidera en mensajes DM (76 de 118) y en publicaciones (454 de 952) — su gestión es mucho más de volumen por privado y contenido que de conversación en comentarios.</div>
+</section>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var btns = document.querySelectorAll("nav.tabs button");
+  var panels = document.querySelectorAll(".panel");
+  btns.forEach(function(b){
+    b.addEventListener("click", function(){
+      btns.forEach(function(x){x.classList.remove("activo");});
+      panels.forEach(function(p){p.classList.remove("activo");});
+      b.classList.add("activo");
+      document.getElementById(b.dataset.target).classList.add("activo");
+      window.scrollTo({top:0, behavior:"instant"});
+    });
+  });
+});
+</script>
+</body>
+</html>
